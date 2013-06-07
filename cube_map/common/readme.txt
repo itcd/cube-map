@@ -1,13 +1,16 @@
-Version of libraries (last updated: 18 Oct 2012)
+Version of libraries (last updated: 7th June 2013)
 
-freeglut	CUDA 5.0 Production - Released Oct 15,2012.
+freeglut from CUDA 5.0.35
 http://developer.nvidia.com/cuda/cuda-toolkit
 
-GLM		30/06/2012 GLM 0.9.3.4 released
+GLM 0.9.4.4
 http://www.g-truc.net/post-project-glm.html
 
-GLI		05/04/2011 GLI 0.3.0.3 released
+GLI 0.4.1.0
 http://www.g-truc.net/post-project-gli.html
 
-AntTweakBar	2012/07/23 - Version 1.15 released
-http://www.antisphere.com/Wiki/tools:anttweakbar
+AntTweakBar 1.16
+http://anttweakbar.sourceforge.net/
+
+SFML 2.0
+http://www.sfml-dev.org/

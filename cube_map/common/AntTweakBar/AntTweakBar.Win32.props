@@ -3,15 +3,15 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>..\common\AntTweakBar\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\common\AntTweakBar\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>../common/AntTweakBar/include;$(IncludePath)</IncludePath>
+    <LibraryPath>../common/AntTweakBar/lib/$(Platform)_$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
       <AdditionalDependencies>AntTweakBar.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
-      <Command>xcopy /y /f "..\common\AntTweakBar\dll\$(Platform)\*.dll" "$(OutDir)"</Command>
+      <Command>xcopy /d /f /y "../common/AntTweakBar/lib/$(Platform)_$(Configuration)/*.dll" "$(OutDir)"</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
 </Project>

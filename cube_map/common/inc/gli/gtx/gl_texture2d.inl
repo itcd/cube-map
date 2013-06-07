@@ -1,15 +1,32 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Image Copyright (c) 2008 - 2011 G-Truc Creation (www.g-truc.net)
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Created : 2010-09-27
-// Updated : 2010-10-01
-// Licence : This source is under MIT License
-// File    : gli/gtx/gl_texture2d.inl
-///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+/// OpenGL Image (gli.g-truc.net)
+///
+/// Copyright (c) 2008 - 2013 G-Truc Creation (www.g-truc.net)
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+///
+/// @ref core
+/// @file gli/gtx/gl_texture2d.inl
+/// @date 2010-09-27 / 2013-01-13
+/// @author Christophe Riccio
+///////////////////////////////////////////////////////////////////////////////////
 
 namespace gli{
-namespace gtx{
-namespace gl_texture2d{
 namespace detail
 {
 	//GL_COMPRESSED_RED, GL_COMPRESSED_RG, GL_COMPRESSED_RGB, GL_COMPRESSED_RGBA, GL_COMPRESSED_SRGB, GL_COMPRESSED_SRGB_ALPHA, 
@@ -149,14 +166,16 @@ namespace detail
 
 	inline GLuint createTexture2D(std::string const & Filename)
 	{
-		gli::texture2D Texture = gli::load(Filename);
+		gli::texture2D Texture(gli::loadStorageDDS(Filename));
 		if(Texture.empty())
 			return 0;
 
-		detail::texture_desc TextureDesc = detail::gli2ogl_cast(Texture.format());
+		detail::format_desc Desc = detail::getFormatInfo(Texture.format());
 
 		GLint Alignment = 0;
+		GLint CurrentTextureName = 0;
 		glGetIntegerv(GL_UNPACK_ALIGNMENT, &Alignment);
+		glGetIntegerv(GL_TEXTURE_BINDING_2D, &CurrentTextureName);
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -166,45 +185,43 @@ namespace detail
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, Texture.levels() > 1 ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		if(size(Texture, BIT_PER_PIXEL) == size(Texture, BLOCK_SIZE) << 3)
+		if(gli::bits_per_pixel(Texture.format()) == gli::block_size(Texture.format()))
 		{
-			for(gli::texture2D::level_type Level = 0; Level < Texture.levels(); ++Level)
+			for(gli::texture2D::size_type Level = 0; Level < Texture.levels(); ++Level)
 			{
 				glTexImage2D(
 					GL_TEXTURE_2D, 
 					GLint(Level), 
-					TextureDesc.InternalFormat,
+					Desc.Internal,
 					GLsizei(Texture[Level].dimensions().x), 
 					GLsizei(Texture[Level].dimensions().y), 
-					0,  
-					TextureDesc.ExternalFormatRev, 
-					TextureDesc.Type, 
+					0,
+					Desc.External, 
+					Desc.Type, 
 					Texture[Level].data());
 			}
 		}
 		else
 		{
-			for(gli::texture2D::level_type Level = 0; Level < Texture.levels(); ++Level)
+			for(gli::texture2D::size_type Level = 0; Level < Texture.levels(); ++Level)
 			{
 				glCompressedTexImage2D(
 					GL_TEXTURE_2D,
 					GLint(Level),
-					TextureDesc.InternalFormat,
+					Desc.Internal,
 					GLsizei(Texture[Level].dimensions().x), 
 					GLsizei(Texture[Level].dimensions().y), 
 					0, 
-					GLsizei(Texture[Level].capacity()), 
+					GLsizei(Texture[Level].size()), 
 					Texture[Level].data());
 			}
 		}
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-
+		// Restaure previous states
+		glBindTexture(GL_TEXTURE_2D, GLuint(CurrentTextureName));
 		glPixelStorei(GL_UNPACK_ALIGNMENT, Alignment);
 
 		return Name;
 	}
 
-}//namespace gl_texture_2d
-}//namespace gtx
 }//namespace gli
