@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cube_map", "cube_map\cube_map.vcxproj", "{8DCB97A7-2EB5-4EE8-92F6-900019CE0BBC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bump_mapping", "bump_mapping\bump_mapping.vcxproj", "{09D2462D-BD2E-4FA4-AEE1-F1636DA0E863}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DCB97A7-2EB5-4EE8-92F6-900019CE0BBC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8DCB97A7-2EB5-4EE8-92F6-900019CE0BBC}.Debug|Win32.Build.0 = Debug|Win32
+		{8DCB97A7-2EB5-4EE8-92F6-900019CE0BBC}.Release|Win32.ActiveCfg = Release|Win32
+		{8DCB97A7-2EB5-4EE8-92F6-900019CE0BBC}.Release|Win32.Build.0 = Release|Win32
+		{09D2462D-BD2E-4FA4-AEE1-F1636DA0E863}.Debug|Win32.ActiveCfg = Debug|Win32
+		{09D2462D-BD2E-4FA4-AEE1-F1636DA0E863}.Debug|Win32.Build.0 = Debug|Win32
+		{09D2462D-BD2E-4FA4-AEE1-F1636DA0E863}.Release|Win32.ActiveCfg = Release|Win32
+		{09D2462D-BD2E-4FA4-AEE1-F1636DA0E863}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
